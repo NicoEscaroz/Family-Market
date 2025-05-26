@@ -13,16 +13,6 @@ class Product {
     required this.category,
   });
 
-  factory Product.fromFirestore(Map<String, dynamic> data, String documentId) {
-    return Product(
-      id: documentId,
-      name: data['name'] ?? '',
-      description: data['description'] ?? '',
-      units: data['units'] ?? '',
-      category: data['category'] ?? '',
-    );
-  }
-
   Map<String, dynamic> toFirestore() {
     return {
       'name': name,
@@ -30,5 +20,35 @@ class Product {
       'units': units,
       'category': category,
     };
+  }
+
+  factory Product.fromFirestore(Map<String, dynamic> map, String docId) {
+    return Product(
+      id: docId,
+      name: map['name'] ?? '',
+      description: map['description'] ?? '',
+      units: map['units'] ?? '',
+      category: map['category'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'units': units,
+      'category': category,
+    };
+  }
+
+  factory Product.fromMap(Map<String, dynamic> map, String docId) {
+    return Product(
+      id: docId,
+      name: map['name'] ?? '',
+      description: map['description'] ?? '',
+      units: map['units'] ?? '',
+      category: map['category'] ?? '',
+    );
   }
 }

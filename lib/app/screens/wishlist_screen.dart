@@ -1,0 +1,100 @@
+import 'package:flutter/material.dart';
+import '../data/services/firebase_service.dart';
+import '../data/models/product.dart';
+
+class WishlistScreen extends StatefulWidget {
+  const WishlistScreen({super.key});
+
+  @override
+  State<WishlistScreen> createState() => _WishlistScreenState();
+}
+
+class _WishlistScreenState extends State<WishlistScreen> {
+  final FirebaseService _firebaseService = FirebaseService();
+  bool _isLoading = false;
+
+  Future<void> _confirmMoveToProducts() async {
+    final shouldMove = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Confirmar'),
+            content: const Text(
+              '¿Deseas mover todos los productos a "comprados"?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancelar'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Confirmar'),
+              ),
+            ],
+          ),
+    );
+
+    if (shouldMove == true) {
+      setState(() => _isLoading = true);
+      try {
+        await _firebaseService.moveWishlistToProducts();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Productos movidos con éxito.')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      } finally {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Lista de compras')),
+      body: Stack(
+        children: [
+          StreamBuilder<List<Product>>(
+            stream: _firebaseService.getWishlist(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child: Text('Error al cargar la lista'));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final products = snapshot.data!;
+              if (products.isEmpty) {
+                return const Center(
+                  child: Text('No hay productos en la lista.'),
+                );
+              }
+              return ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  final product = products[index];
+                  return ListTile(
+                    title: Text(product.name),
+                    subtitle: Text('${product.units} - ${product.category}'),
+                  );
+                },
+              );
+            },
+          ),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ElevatedButton(
+          onPressed: _isLoading ? null : _confirmMoveToProducts,
+          child: const Text('Marcar como comprados'),
+        ),
+      ),
+    );
+  }
+}

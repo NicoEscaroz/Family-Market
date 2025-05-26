@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:family_market/app/screens/missing_products_screen.dart';
-import 'package:family_market/app/screens/shopping_cart_screen.dart';
-import 'package:family_market/app/data/models/product.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:family_market/app/screens/products_screen.dart';
+import 'package:family_market/app/screens/wishlist_screen.dart';
 import 'package:family_market/app/screens/add_product_screen.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  runApp(FamilyInventoryApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const FamilyInventoryApp());
 }
 
 class FamilyInventoryApp extends StatefulWidget {
+  const FamilyInventoryApp({super.key});
+
   @override
   State<FamilyInventoryApp> createState() => _FamilyInventoryAppState();
 }
@@ -19,21 +21,7 @@ class FamilyInventoryApp extends StatefulWidget {
 class _FamilyInventoryAppState extends State<FamilyInventoryApp> {
   int _selectedIndex = 0;
 
-  final List<Product> _missingProducts = [];
-  final List<Product> _shoppingList = [];
-
-  void _addProduct(Product product) {
-    setState(() {
-      _missingProducts.add(product);
-    });
-  }
-
-  void _moveShoppingToMissing() {
-    setState(() {
-      _missingProducts.addAll(_shoppingList);
-      _shoppingList.clear();
-    });
-  }
+  final List<Widget> _screens = const [ProductsScreen(), WishlistScreen()];
 
   void _onNavTap(int index) {
     setState(() {
@@ -42,30 +30,23 @@ class _FamilyInventoryAppState extends State<FamilyInventoryApp> {
   }
 
   Future<void> _navigateToAddProduct(BuildContext context) async {
-    final result = await Navigator.push(
+    final isWishlist = _selectedIndex == 1;
+
+    await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => AddProductScreen()),
+      MaterialPageRoute(
+        builder: (_) => AddProductScreen(toWishlist: isWishlist),
+      ),
     );
-    if (result != null && result is Product) {
-      _addProduct(result);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _screens = [
-      MissingProductsScreen(products: _missingProducts),
-      ShoppingCartScreen(
-        shoppingList: _shoppingList,
-        onBuy: _moveShoppingToMissing,
-      ),
-    ];
-
     return MaterialApp(
       title: 'Family Inventory',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: Text('Family Inventory')),
+        appBar: AppBar(title: const Text('Family Inventory')),
         body: Column(
           children: [
             Expanded(child: _screens[_selectedIndex]),
@@ -77,8 +58,8 @@ class _FamilyInventoryAppState extends State<FamilyInventoryApp> {
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () => _navigateToAddProduct(innerContext),
-                      icon: Icon(Icons.add),
-                      label: Text('Add Product'),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Agregar producto'),
                     ),
                   ),
                 );
@@ -86,18 +67,17 @@ class _FamilyInventoryAppState extends State<FamilyInventoryApp> {
             ),
           ],
         ),
-
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onNavTap,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.inventory),
-              label: 'Missing',
+              label: 'Comprados',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
-              label: 'Shopping List',
+              label: 'Wishlist',
             ),
           ],
         ),
