@@ -140,4 +140,30 @@ class _WishlistScreenState extends State<WishlistScreen> {
       ),
     );
   }
+
+  Color _getCategoryColor(String category) {
+    switch (category.toLowerCase()) {
+      case 'hygiene':
+        return Colors.blue;
+      case 'cleaning':
+        return Colors.cyan;
+      case 'food':
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  IconData _getCategoryIcon(String category) {
+    switch (category.toLowerCase()) {
+      case 'food':
+        return Icons.apple;
+      case 'cleaning':
+        return Icons.cleaning_services;
+      case 'hygiene':
+        return Icons.soap;
+      default:
+        return Icons.shopping_bag;
+    }
+  }
 }

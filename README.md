@@ -1,16 +1,32 @@
-# family_market
+# 📦 Family Market
 
-A new Flutter project.
+**Family Market** es una aplicación móvil desarrollada con Flutter que permite a los usuarios de una familia gestionar los productos comprados y por comprar en el hogar. La aplicación utiliza Firebase Firestore como backend para almacenar la información en la nube y actualizar los datos en tiempo real.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Características
 
-A few resources to get you started if this is your first Flutter project:
+- ✅ Visualización de productos comprados.
+- 🛒 Lista de productos por comprar (wishlist).
+- ➕ Agregado de productos con nombre, descripción, categoría y unidades.
+- 🧹 Eliminación de productos mediante deslizamiento (swipe).
+- 🔁 Mover productos de la wishlist a la lista de comprados.
+- ☁️ Sincronización en tiempo real con Firebase Firestore.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🧱 Estructura del Proyecto
+
+```bash
+lib/
+│
+├── app/
+│   ├── data/
+│   │   ├── models/         # Modelos de datos (Product)
+│   │   ├── providers/      # Futuro manejo de estados
+│   │   └── services/       # Servicios (FirebaseService)
+│   ├── login/              # Autenticación (futura implementación)
+│   ├── screens/            # Pantallas de la app (productos, wishlist, agregar)
+│   └── widgets/            # Componentes reutilizables
+│
+└── main.dart               # Punto de entrada de la aplicación
