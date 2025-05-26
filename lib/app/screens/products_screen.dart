@@ -33,9 +33,50 @@ class _ProductsScreenState extends State<ProductsScreen> {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              return ListTile(
-                title: Text(product.name),
-                subtitle: Text('${product.units} - ${product.category}'),
+              return Dismissible(
+                key: Key(product.id),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: const Icon(Icons.delete, color: Colors.white),
+                ),
+                confirmDismiss: (direction) async {
+                  return await showDialog(
+                    context: context,
+                    builder:
+                        (context) => AlertDialog(
+                          title: const Text('¿Eliminar producto?'),
+                          content: const Text(
+                            'Esta acción no se puede deshacer.',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text('Cancelar'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: const Text('Eliminar'),
+                            ),
+                          ],
+                        ),
+                  );
+                },
+                onDismissed: (direction) async {
+                  await _firebaseService.deleteProduct(
+                    product.id,
+                    fromWishlist: false,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${product.name} eliminado.')),
+                  );
+                },
+                child: ListTile(
+                  title: Text(product.name),
+                  subtitle: Text('${product.units} - ${product.category}'),
+                ),
               );
             },
           );

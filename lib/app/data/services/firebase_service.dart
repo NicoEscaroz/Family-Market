@@ -4,7 +4,7 @@ import '../models/product.dart';
 class FirebaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  /// Stream de productos comprados
+  /// Todos los productos
   Stream<List<Product>> getProducts() {
     return _db.collection('products').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -13,7 +13,7 @@ class FirebaseService {
     });
   }
 
-  /// Stream de productos por comprar (wishlist)
+  /// Todos los productos (wishlist)
   Stream<List<Product>> getWishlist() {
     return _db.collection('wishlist').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -22,7 +22,7 @@ class FirebaseService {
     });
   }
 
-  /// Agrega un producto a la colección deseada
+  /// Agrega un producto
   Future<void> addProduct(Product product, {required bool toWishlist}) async {
     final collectionName = toWishlist ? 'wishlist' : 'products';
     await _db.collection(collectionName).add(product.toFirestore());
@@ -46,5 +46,11 @@ class FirebaseService {
     }
 
     await batch.commit();
+  }
+
+  /// Elimina un producto
+  Future<void> deleteProduct(String id, {required bool fromWishlist}) async {
+    final collectionName = fromWishlist ? 'wishlist' : 'products';
+    await _db.collection(collectionName).doc(id).delete();
   }
 }
