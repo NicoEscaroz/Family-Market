@@ -23,9 +23,7 @@ lib/
 ├── app/
 │   ├── data/
 │   │   ├── models/         # Modelos de datos (Product)
-│   │   ├── providers/      # Futuro manejo de estados
 │   │   └── services/       # Servicios (FirebaseService)
-│   ├── login/              # Autenticación (futura implementación)
 │   ├── screens/            # Pantallas de la app (productos, wishlist, agregar)
 │   └── widgets/            # Componentes reutilizables
 │
