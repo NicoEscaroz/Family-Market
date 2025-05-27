@@ -13,6 +13,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   final FirebaseService _firebaseService = FirebaseService();
   bool _isLoading = false;
 
+  // Método para confirmar el movimiento de productos a "comprados"
   Future<void> _confirmMoveToProducts() async {
     final shouldMove = await showDialog<bool>(
       context: context,
@@ -52,6 +53,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     }
   }
 
+  // Método para cargar la lista de productos al iniciar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,6 +189,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     );
   }
 
+  // Método para construir la tarjeta de producto
   Widget _buildProductCard(Product product) {
     return Dismissible(
       key: Key(product.id),
@@ -315,6 +318,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     );
   }
 
+  // Método para mostrar el diálogo de confirmación de eliminación
   Future<bool?> _showDeleteDialog(Product product) {
     return showDialog<bool>(
       context: context,
@@ -369,6 +373,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     );
   }
 
+  // Métodos para obtener el color y el ícono según la categoría
   Color _getCategoryColor(String category) {
     switch (category.toLowerCase()) {
       case 'hygiene':

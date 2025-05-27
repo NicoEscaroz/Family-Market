@@ -35,6 +35,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
+  // Método para construir el estado de error
   Widget _buildErrorState() {
     return Center(
       child: Column(
@@ -66,6 +67,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
+  // Método para construir el estado de carga
   Widget _buildLoadingState() {
     return const Center(
       child: Column(
@@ -82,6 +84,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
+  // Método para construir el estado vacío
   Widget _buildEmptyState() {
     return Center(
       child: Column(
@@ -135,6 +138,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
+  // Método para construir la lista de productos
   Widget _buildProductsList(List<Product> products) {
     return Column(
       children: [
@@ -226,6 +230,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
+  // Método para construir la tarjeta de producto
   Widget _buildProductCard(Product product) {
     return Dismissible(
       key: Key(product.id),
@@ -363,6 +368,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
+  // Método para mostrar el diálogo de confirmación de eliminación
   Future<bool?> _showDeleteDialog(Product product) {
     return showDialog<bool>(
       context: context,
@@ -417,6 +423,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
+  // Método para eliminar un producto
   Future<void> _deleteProduct(Product product) async {
     try {
       await _firebaseService.deleteProduct(product.id, fromWishlist: false);
@@ -461,6 +468,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     }
   }
 
+  // Métodos para obtener el color y el icono según la categoría
   Color _getCategoryColor(String category) {
     switch (category.toLowerCase()) {
       case 'hygiene':

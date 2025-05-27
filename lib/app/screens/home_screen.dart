@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // Método para navegar a la pantalla de agregar producto
   Future<void> _navigateToAddProduct(BuildContext context) async {
     final isWishlist = _selectedIndex == 1;
 
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Método para cerrar sesión
   Future<void> _signOut() async {
     try {
       await _authService.signOut();
@@ -50,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Método para mostrar el diálogo de confirmación de cierre de sesión
   void _showLogoutDialog() {
     showDialog(
       context: context,

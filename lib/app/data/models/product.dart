@@ -13,6 +13,7 @@ class Product {
     required this.category,
   });
 
+  // Convert to Firestore map
   Map<String, dynamic> toFirestore() {
     return {
       'name': name,
@@ -22,6 +23,7 @@ class Product {
     };
   }
 
+  // Factory constructor to create a Product from Firestore map
   factory Product.fromFirestore(Map<String, dynamic> map, String docId) {
     return Product(
       id: docId,
@@ -32,6 +34,7 @@ class Product {
     );
   }
 
+  // Convert to generic map
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -42,6 +45,7 @@ class Product {
     };
   }
 
+  // Factory constructor to create a Product from a generic map
   factory Product.fromMap(Map<String, dynamic> map, String docId) {
     return Product(
       id: docId,

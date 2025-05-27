@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _obscurePassword = true;
 
+  // Método para inicializar el estado
   @override
   void dispose() {
     _emailController.dispose();
@@ -24,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  // Método para manejar el inicio de sesión
   Future<void> _signIn() async {
     if (!_formKey.currentState!.validate()) return;
 
