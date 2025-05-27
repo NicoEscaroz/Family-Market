@@ -23,57 +23,134 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Product')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Name'),
-                onSaved: (value) => _name = value!,
-              ),
-              DropdownButtonFormField<String>(
-                value: _category,
-                decoration: const InputDecoration(labelText: 'Category'),
-                items:
-                    _categories.map((String cat) {
-                      return DropdownMenuItem(
-                        value: cat,
-                        child: Text(cat.toUpperCase()),
-                      );
-                    }).toList(),
-                onChanged: (value) => setState(() => _category = value!),
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Description'),
-                onSaved: (value) => _description = value!,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Units'),
-                onSaved: (value) => _units = value!,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  _formKey.currentState!.save();
-                  final newProduct = Product(
-                    id: _uuid.v4(),
-                    name: _name,
-                    category: _category,
-                    description: _description,
-                    units: _units,
-                  );
-                  await FirebaseService().addProduct(
-                    toWishlist: widget.toWishlist,
-                    newProduct,
-                  );
-                  Navigator.pop(context);
-                },
-                child: const Text('Confirm'),
+      appBar: AppBar(title: const Text('Agregar Producto')),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
             ],
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                // Nombre
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Nombre',
+                    prefixIcon: const Icon(Icons.shopping_bag),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onSaved: (value) => _name = value!.trim(),
+                ),
+                const SizedBox(height: 16),
+
+                // Categoría
+                DropdownButtonFormField<String>(
+                  value: _category,
+                  decoration: InputDecoration(
+                    labelText: 'Categoría',
+                    prefixIcon: const Icon(Icons.category),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  items:
+                      _categories.map((cat) {
+                        return DropdownMenuItem(
+                          value: cat,
+                          child: Text(cat.toUpperCase()),
+                        );
+                      }).toList(),
+                  onChanged: (value) => setState(() => _category = value!),
+                ),
+                const SizedBox(height: 16),
+
+                // Descripción
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Descripción',
+                    prefixIcon: const Icon(Icons.description),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onSaved: (value) => _description = value!.trim(),
+                ),
+                const SizedBox(height: 16),
+
+                // Unidades
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Unidades',
+                    prefixIcon: const Icon(Icons.format_list_numbered),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onSaved: (value) => _units = value!.trim(),
+                ),
+                const SizedBox(height: 24),
+
+                // Botón Confirmar
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      _formKey.currentState!.save();
+                      final newProduct = Product(
+                        id: _uuid.v4(),
+                        name: _name,
+                        category: _category,
+                        description: _description,
+                        units: _units,
+                      );
+                      await FirebaseService().addProduct(
+                        toWishlist: widget.toWishlist,
+                        newProduct,
+                      );
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.check_circle_outline),
+                    label: const Text('Confirmar'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[600],
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
