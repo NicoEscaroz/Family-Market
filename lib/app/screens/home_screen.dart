@@ -6,17 +6,25 @@ import 'package:family_market/app/screens/add_product_screen.dart';
 import 'package:family_market/app/data/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final AuthService? authService;
+  const HomeScreen({super.key, this.authService});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late final AuthService _authService2;
   int _selectedIndex = 0;
   final _authService = AuthService();
 
   final List<Widget> _screens = const [ProductsScreen(), WishlistScreen()];
+
+  @override
+  void initState() {
+    super.initState();
+    _authService2 = widget.authService ?? AuthService();
+  }
 
   void _onNavTap(int index) {
     setState(() {
