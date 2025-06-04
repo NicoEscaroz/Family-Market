@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth;
+
+  // Constructor que permite dependency injection para testing
+  AuthService({FirebaseAuth? firebaseAuth})
+    : _auth = firebaseAuth ?? FirebaseAuth.instance;
 
   // Obtener el usuario actual
   User? get currentUser => _auth.currentUser;

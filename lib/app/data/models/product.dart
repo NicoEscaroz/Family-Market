@@ -46,13 +46,15 @@ class Product {
   }
 
   // Factory constructor to create a Product from a generic map
-  factory Product.fromMap(Map<String, dynamic> map, String docId) {
+  // Si el map contiene 'id', se usa ese valor
+  // Si no, se usa el docId proporcionado (puede ser '')
+  factory Product.fromMap(Map<String, dynamic> map, [String? docId]) {
     return Product(
-      id: docId,
-      name: map['name'] ?? '',
-      description: map['description'] ?? '',
-      units: map['units'] ?? '',
-      category: map['category'] ?? '',
+      id: map['id']?.toString() ?? docId ?? '',
+      name: map['name']?.toString() ?? '',
+      description: map['description']?.toString() ?? '',
+      units: map['units']?.toString() ?? '',
+      category: map['category']?.toString() ?? '',
     );
   }
 }
